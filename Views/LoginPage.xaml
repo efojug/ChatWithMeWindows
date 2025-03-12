@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ChatWithMeWindows.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="20">
+        <StackPanel VerticalAlignment="Center" MaxWidth="400">
+
+            <TextBlock Text="ChatWithMe" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+
+            <TextBox PlaceholderText="UserName" Text="{x:Bind ViewModel.Username, Mode=TwoWay}" Margin="0, 0, 0, 12"/>
+
+            <PasswordBox PlaceholderText="Password" Password="{x:Bind ViewModel.Password, Mode=TwoWay}" Margin="0, 0, 0, 20"/>
+
+            <Button Content="Login" Command="{x:Bind ViewModel.LoginCommand}" HorizontalAlignment="Stretch"/>
+
+            <HyperlinkButton Content="Register" Command="{x:Bind ViewModel.NavigateToRegisterCommand}" HorizontalAlignment="Center" Margin="0, 20, 0, 0"/>
+
+            <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" Foreground="Red" TextWrapping="Wrap" Margin="0, 20, 0, 0" Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" Margin="0, 20, 0, 0" Width="24" Height="24" HorizontalAlignment="Center"/>
+
+        </StackPanel>
+    </Grid>
+</Page>

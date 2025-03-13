@@ -1,4 +1,7 @@
 ﻿using ChatWithMeWindows.Services;
+using ChatWithMeWindows.ViewModels;
+using ChatWithMeWindows.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -11,60 +14,53 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace ChatWithMeWindows
 {
     public partial class App : Application
     {
-        private Window _window;
+        public new static App Current => (App)Application.Current;
+        public IServiceProvider Services { get; }
 
         public App()
         {
             this.InitializeComponent();
+            Services = ConfigureServices();
         }
 
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
+        private IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            //register httpclient
+            services.AddSingleton(new HttpClient());
+
+            //register service layer
+            services.AddSingleton<AuthenticationService>();
+            services.AddSingleton<MessagingService>();
+
+            //register viewmodel
+            services.AddSingleton<LoginViewModel>();
+            services.AddSingleton<ChatViewModel>();
+
+            //register page (optional?
+            services.AddSingleton<LoginPage>();
+            services.AddSingleton<ChatPage>();
+
+            return services.BuildServiceProvider();
+        }
+
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _window = new MainWindow();
-
-            //TODO
-
-            var httpService = new HttpService("https://your-api-url.com/api");
-            var webSocketService = new WebSocketService("wss://your-api-url.com/ws");
-            var storageService = new StorageService();
-            var navigationService = new NavigationService(_window as MainWindow);
-
-            // 检查是否已登录
-            var user = storageService.GetUser();
-
-            // 检查是否已登录
-            var user = storageService.GetUser();
-
-            if (user != null)
-            {
-                // 已登录，导航到主页
-                navigationService.NavigateTo("MainPage");
-            }
-            else
-            {
-                // 未登录，导航到登录页
-                navigationService.NavigateTo("LoginPage");
-            }
-
-            _window.Activate();
+            m_window = new MainWindow();
+            m_window.Activate();
         }
-
+        private Window m_window;
     }
 }

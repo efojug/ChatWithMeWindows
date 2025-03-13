@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ChatWithMeWindows.Models
 {
-    internal class Message
+    public class Message
     {
         public int UserId { get; set; }
         public string Content { get; set; }
-        public long Time { get; set; }
+        public DateTime Time { get; set; }
     }
 }

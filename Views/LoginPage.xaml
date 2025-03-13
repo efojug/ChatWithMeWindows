@@ -3,25 +3,21 @@
     x:Class="ChatWithMeWindows.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:local="using:ChatWithMeWindows.Views">
 
     <Grid Padding="20">
-        <StackPanel VerticalAlignment="Center" MaxWidth="400">
-
-            <TextBlock Text="ChatWithMe" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0,0,0,40"/>
-
-            <TextBox PlaceholderText="UserName" Text="{x:Bind ViewModel.Username, Mode=TwoWay}" Margin="0, 0, 0, 12"/>
-
-            <PasswordBox PlaceholderText="Password" Password="{x:Bind ViewModel.Password, Mode=TwoWay}" Margin="0, 0, 0, 20"/>
-
-            <Button Content="Login" Command="{x:Bind ViewModel.LoginCommand}" HorizontalAlignment="Stretch"/>
-
-            <HyperlinkButton Content="Register" Command="{x:Bind ViewModel.NavigateToRegisterCommand}" HorizontalAlignment="Center" Margin="0, 20, 0, 0"/>
-
-            <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" Foreground="Red" TextWrapping="Wrap" Margin="0, 20, 0, 0" Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" Margin="0, 20, 0, 0" Width="24" Height="24" HorizontalAlignment="Center"/>
-
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+            
+            <TextBlock Text="登录" FontSize="24" HorizontalAlignment="Center"/>
+            
+            <TextBox PlaceholderText="用户名" Text="{x:Bind ViewModel.Username, Mode=TwoWay}"/>
+            
+            <!-- 因为 PasswordBox 无法直接绑定密码，所以通过事件在 code-behind 中赋值 -->
+            <PasswordBox x:Name="PasswordBox" PlaceholderText="密码"/>
+            
+            <Button Content="登录" Command="{x:Bind ViewModel.LoginCommand}" Click="OnLoginClicked"/>
+            
+            <TextBlock Text="{x:Bind ViewModel.LoginStatus}" Foreground="Red"/>
         </StackPanel>
     </Grid>
 </Page>
